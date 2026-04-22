@@ -19,6 +19,7 @@ def main():
     print(ai_output)
 
     print("Generating Terraform fixes...")
+    print("Findings:", findings)
     generate_terraform(findings)
 
 if __name__ == "__main__":

@@ -1,23 +1,36 @@
+import os
+
+OUTPUT_FILE = "outputs/fixes.tf"
+
 def generate_terraform(findings):
-    tf_code = ""
+    if not findings:
+        print("No findings → no Terraform generated")
+        return
 
-    for f in findings:
+    os.makedirs("outputs", exist_ok=True)
+
+    tf_blocks = []
+
+    for i, f in enumerate(findings):
         if f["issue"] == "Full admin access":
-            tf_code += """
-# Restrict IAM policy
-resource "aws_iam_policy" "restricted_policy" {
-  name = "restricted_policy"
+            block = f"""
+# Fix {i}
+resource "aws_iam_policy" "restricted_policy_{i}" {{
+  name = "restricted_policy_{i}"
 
-  policy = jsonencode({
+  policy = jsonencode({{
     Version = "2012-10-17",
-    Statement = [{
+    Statement = [{{
       Effect = "Allow",
       Action = ["s3:ListBucket"],
       Resource = "*"
-    }]
-  })
-}
+    }}]
+  }})
+}}
 """
+            tf_blocks.append(block)
 
-    with open("outputs/fixes.tf", "w") as f:
-        f.write(tf_code)
+    with open(OUTPUT_FILE, "w") as file:
+        file.write("\n".join(tf_blocks))
+
+    print(f"Terraform file generated at: {OUTPUT_FILE}")
