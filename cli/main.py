@@ -2,6 +2,7 @@ from scanner.iam_scanner import get_iam_policies
 from analyzer.rules_engine import analyze_policies
 from analyzer.ai_analyzer import analyze_with_ai
 from terraform.generator import generate_terraform
+from analyzer.rules_engine import calculate_risk_score
 import json
 
 def main():
@@ -21,6 +22,9 @@ def main():
     print("Generating Terraform fixes...")
     print("Findings:", findings)
     generate_terraform(findings)
+
+    score = calculate_risk_score(findings)
+    print(f"Overall Risk Score: {score}")
 
 if __name__ == "__main__":
     main()

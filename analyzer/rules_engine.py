@@ -8,36 +8,45 @@ def analyze_policies(policies):
             actions = statement.get("Action", [])
             resources = statement.get("Resource", [])
 
-            # Normalize to list
             if isinstance(actions, str):
                 actions = [actions]
 
             if isinstance(resources, str):
                 resources = [resources]
 
-            # 🔥 Rule 1: Full admin access
+            # Full admin
             if "*" in actions:
                 findings.append({
                     "policy": policy["PolicyName"],
                     "issue": "Full admin access (*)",
-                    "severity": "CRITICAL"
+                    "severity": "CRITICAL",
+                    "affected_actions": actions,
+                    "affected_resources": resources,
+                    "recommendation": "Replace * with specific actions"
                 })
 
-            # 🔥 Rule 2: Wildcard service access (e.g., s3:*)
+            # Wildcard service
             for action in actions:
                 if action.endswith(":*"):
                     findings.append({
                         "policy": policy["PolicyName"],
                         "issue": f"Wildcard service access ({action})",
-                        "severity": "HIGH"
+                        "severity": "HIGH",
+                        "affected_actions": actions,
+                        "affected_resources": resources,
+                        "recommendation": "Limit actions to required operations only"
                     })
 
-            # 🔥 Rule 3: Resource wildcard
-            if "*" in resources:
-                findings.append({
-                    "policy": policy["PolicyName"],
-                    "issue": "Resource wildcard (*)",
-                    "severity": "MEDIUM"
-                })
-
     return findings
+
+def calculate_risk_score(findings):
+    score_map = {
+        "CRITICAL": 10,
+        "HIGH": 7,
+        "MEDIUM": 5,
+        "LOW": 2
+    }
+
+    total_score = sum(score_map.get(f["severity"], 0) for f in findings)
+
+    return total_score

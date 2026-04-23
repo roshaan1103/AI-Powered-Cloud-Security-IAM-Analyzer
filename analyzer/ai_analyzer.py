@@ -2,10 +2,17 @@ import requests
 
 def analyze_with_ai(findings):
     prompt = f"""
-    Analyze these cloud security findings:
+    You are a cloud security expert.
+
+    Analyze the following IAM findings:
     {findings}
 
-    Explain risks and suggest fixes.
+    For each finding:
+    1. Explain the exact risk
+    2. Suggest a precise least-privilege fix
+    3. Prioritize critical issues first
+
+    Be concise and technical.
     """
 
     try:
