@@ -1,3 +1,5 @@
 venv/
 __pycache__/
 *.pyc
+outputs/findings.json
+outputs/fixes.tf

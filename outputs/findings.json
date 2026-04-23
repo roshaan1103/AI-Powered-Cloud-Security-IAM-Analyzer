@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "policy": "InsecureFullAccessPolicy",
+    "issue": "Full admin access (*)",
+    "severity": "CRITICAL"
+  },
+  {
+    "policy": "InsecureFullAccessPolicy",
+    "issue": "Resource wildcard (*)",
+    "severity": "MEDIUM"
+  }
+]
