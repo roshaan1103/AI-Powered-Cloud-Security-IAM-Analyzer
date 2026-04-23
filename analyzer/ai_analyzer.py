@@ -1,21 +1,22 @@
 import requests
 
 def analyze_with_ai(findings):
-    prompt = f"""
-    You are a cloud security expert.
-
-    Analyze the following IAM findings:
-    {findings}
-
-    For each finding:
-    1. Explain the exact risk
-    2. Suggest a precise least-privilege fix
-    3. Prioritize critical issues first
-
-    Be concise and technical.
-    """
-
     try:
+        prompt = f"""
+You are a cloud security expert.
+
+Analyze these findings:
+{findings}
+
+Instructions:
+- Prioritize CRITICAL issues first
+- Explain risks clearly
+- Suggest precise fixes
+- Separate IAM and S3 issues
+
+Be concise and technical.
+"""
+
         response = requests.post(
             "http://localhost:11434/api/generate",
             json={
@@ -26,13 +27,7 @@ def analyze_with_ai(findings):
         )
 
         data = response.json()
-
-        if "response" not in data:
-            print("AI ERROR:", data)
-            return "AI analysis failed"
-
-        return data["response"]
+        return data.get("response", "No AI response")
 
     except Exception as e:
-        print("Connection Error:", str(e))
-        return "AI not available"
+        return f"AI failed: {str(e)}"

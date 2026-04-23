@@ -2,11 +2,13 @@
   {
     "policy": "InsecureFullAccessPolicy",
     "issue": "Full admin access (*)",
-    "severity": "CRITICAL"
-  },
-  {
-    "policy": "InsecureFullAccessPolicy",
-    "issue": "Resource wildcard (*)",
-    "severity": "MEDIUM"
+    "severity": "CRITICAL",
+    "affected_actions": [
+      "*"
+    ],
+    "affected_resources": [
+      "*"
+    ],
+    "recommendation": "Replace * with specific actions"
   }
 ]
