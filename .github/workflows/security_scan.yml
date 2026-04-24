@@ -15,7 +15,7 @@ jobs:
           python-version: 3.14.4
 
       - name: Install dependencies
-        run: pip install boto3
+        run: pip install -r requirements.txt
 
       - name: Run Scanner
         run: python -m cli.main
