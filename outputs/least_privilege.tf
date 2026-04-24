@@ -9,20 +9,21 @@ resource "aws_iam_policy" "least_privilege_policy" {
     {
       "Effect": "Allow",
       "Action": [
-        "*:ListPolicies",
-        "*:ConsoleLogin",
-        "*:GetAccountColor",
-        "*:GetPolicyVersion",
-        "*:ListEnrollmentStatuses",
-        "*:ListDelegatedAdministrators",
-        "*:ListManagedNotificationEvents",
         "*:GetAccountPlanState",
-        "*:GetCostForecast",
-        "*:GetCostAndUsage",
+        "*:ListDelegatedAdministrators",
         "*:DescribeOrganization",
+        "*:GetCostAndUsage",
+        "*:GetPolicyVersion",
+        "*:GetAccountInformation",
+        "*:ListEnrollmentStatuses",
         "*:ListBuckets",
+        "*:LookupEvents",
         "*:DescribeEventAggregates",
-        "*:GetAccountInformation"
+        "*:GetCostForecast",
+        "*:ListPolicies",
+        "*:ListManagedNotificationEvents",
+        "*:GetAccountColor",
+        "*:ConsoleLogin"
       ],
       "Resource": "*"
     }

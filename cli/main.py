@@ -8,6 +8,9 @@ from scanner.cloudtrail_scanner import get_cloudtrail_events
 from analyzer.least_privilege import generate_least_privilege
 from terraform.generator import generate_least_privilege_policy
 from analyzer.rules_engine import analyze_s3
+from analyzer.attack_path import build_iam_graph, detect_attack_paths
+from analyzer.policy_simulator import simulate_policy
+import sys
 import json
 
 def main():
@@ -50,6 +53,32 @@ def main():
     print("Derived Actions:", actions)
 
     generate_least_privilege_policy(actions)
+
+    print("Building IAM attack graph...")
+    graph = build_iam_graph(policies)
+
+    print("Detecting attack paths...")
+    attack_findings = detect_attack_paths(graph)
+    print("Attack Path Findings:", attack_findings)
+
+    findings.extend(attack_findings)
+
+
+    critical_exists = any(f["severity"] == "CRITICAL" for f in findings)
+
+    if critical_exists:
+        print("Critical issues found! Failing pipeline.")
+        #sys.exit(1)
+
+
+
+    print("Simulating IAM policy...")
+    decision = simulate_policy(
+        policy_arn="arn:aws:iam::149160851666:user/AI-Powered-Cloud-Security-IAM-Analyzer",
+        action="s3:DeleteBucket"
+    )
+
+    print("Simulation result:", decision)
 
 if __name__ == "__main__":
     main()
