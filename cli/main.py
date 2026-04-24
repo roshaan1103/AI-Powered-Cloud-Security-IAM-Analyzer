@@ -74,7 +74,7 @@ def main():
 
     print("Simulating IAM policy...")
     decision = simulate_policy(
-        policy_arn="arn:aws:iam::149160851666:user/AI-Powered-Cloud-Security-IAM-Analyzer",
+        principal_arn="arn:aws:iam::149160851666:user/AI-Powered-Cloud-Security-IAM-Analyzer",
         action="s3:DeleteBucket"
     )
 
