@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 outputs/findings.json
 outputs/fixes.tf
+outputs/least_privilege.tf
