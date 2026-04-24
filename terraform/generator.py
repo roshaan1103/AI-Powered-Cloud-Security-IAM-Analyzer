@@ -93,3 +93,29 @@ resource "aws_s3_bucket_versioning" "ver_{i}" {{
         file.write("\n".join(tf_blocks))
 
     print(f"Terraform file generated at: {OUTPUT_FILE}")
+
+def generate_least_privilege_policy(actions):
+    import json
+
+    policy = {
+        "Version": "2012-10-17",
+        "Statement": [{
+            "Effect": "Allow",
+            "Action": actions,
+            "Resource": "*"
+        }]
+    }
+
+    tf_code = f"""
+# Least Privilege Policy from CloudTrail
+resource "aws_iam_policy" "least_privilege_policy" {{
+  name = "least_privilege_policy"
+
+  policy = jsonencode({json.dumps(policy, indent=2)})
+}}
+"""
+
+    with open("outputs/least_privilege.tf", "w") as f:
+        f.write(tf_code)
+
+    print("Least privilege policy generated.")

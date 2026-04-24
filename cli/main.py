@@ -4,7 +4,9 @@ from analyzer.ai_analyzer import analyze_with_ai
 from terraform.generator import generate_terraform
 from analyzer.rules_engine import calculate_risk_score
 from scanner.s3_scanner import get_s3_buckets
-
+from scanner.cloudtrail_scanner import get_cloudtrail_events
+from analyzer.least_privilege import generate_least_privilege
+from terraform.generator import generate_least_privilege_policy
 from analyzer.rules_engine import analyze_s3
 import json
 
@@ -39,6 +41,15 @@ def main():
 
     score = calculate_risk_score(findings)
     print(f"Overall Risk Score: {score}")
+
+    print("Analyzing CloudTrail for least privilege...")
+    events = get_cloudtrail_events()
+
+    actions = generate_least_privilege(events)
+
+    print("Derived Actions:", actions)
+
+    generate_least_privilege_policy(actions)
 
 if __name__ == "__main__":
     main()
