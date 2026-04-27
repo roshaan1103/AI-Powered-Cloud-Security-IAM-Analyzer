@@ -9,13 +9,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.14.4
 
       - name: Install dependencies
-        run: pip install boto3
+        run: pip install -r requirements.txt
 
       - name: Run Scanner
         run: python -m cli.main
